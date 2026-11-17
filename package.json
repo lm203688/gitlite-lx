@@ -1,0 +1,77 @@
+{
+  "name": "gitlite-lx",
+  "displayName": "GitLite — Inline Blame & File History",
+  "description": "Lightweight GitLens alternative. Inline blame, file history timeline, and simple diff viewer — fast, local, no bloat. Your code never leaves your machine.",
+  "version": "1.0.0",
+  "publisher": "LxStudio",
+  "icon": "icon.png",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lm203688/gitlite-lx.git"
+  },
+  "engines": { "vscode": "^1.80.0" },
+  "categories": [
+    "SCM",
+    "Other"
+  ],
+  "keywords": [
+    "git",
+    "blame",
+    "file history",
+    "diff",
+    "commit",
+    "git lens alternative",
+    "inline blame",
+    "git history"
+  ],
+  "activationEvents": [
+    "onCommand:gitlite.toggleBlame",
+    "onCommand:gitlite.openHistory",
+    "onCommand:gitlite.openDiff",
+    "onCommand:gitlite.upgradeToPro"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "gitlite.toggleBlame", "title": "GitLite: Toggle Inline Blame", "category": "GitLite" },
+      { "command": "gitlite.openHistory", "title": "GitLite: Show File History", "category": "GitLite" },
+      { "command": "gitlite.openDiff", "title": "GitLite: Diff with Previous Version", "category": "GitLite" },
+      { "command": "gitlite.upgradeToPro", "title": "GitLite: Upgrade to Pro", "category": "GitLite" }
+    ],
+    "menus": {
+      "editor/context": [
+        { "command": "gitlite.toggleBlame", "group": "navigation@1" },
+        { "command": "gitlite.openHistory", "group": "navigation@2" },
+        { "command": "gitlite.openDiff", "group": "navigation@3" }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "gitlite", "title": "GitLite", "icon": "$(history)" }
+      ]
+    },
+    "views": {
+      "gitlite": [
+        { "id": "gitlite-history", "name": "File History" }
+      ]
+    },
+    "configuration": {
+      "title": "GitLite",
+      "properties": {
+        "gitlite.verifyEndpoint": {
+          "type": "string",
+          "default": "https://snapmark-license.463102527.workers.dev/verify",
+          "description": "License verification endpoint (Cloudflare Worker /verify)."
+        },
+        "gitlite.buyoutLink": {
+          "type": "string",
+          "default": "",
+          "description": "Paddle checkout link for the GitLite Pro buyout ($9 one-time). Fill in after creating product in Paddle."
+        }
+      }
+    }
+  },
+  "scripts": {},
+  "dependencies": {}
+}

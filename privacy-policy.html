@@ -1,0 +1,56 @@
+# Privacy Policy — GitLite
+
+**Effective date:** 2026-11-17
+**Contact:** support@lxstudio.app
+
+## 1. Overview
+
+GitLite is a Visual Studio Code extension that provides inline git blame annotations, file history views, and diff visualization. This Privacy Policy describes how GitLite handles your data.
+
+## 2. Data We Collect
+
+GitLite collects **no personal data** from your code or files. The only data transmitted externally is:
+
+- **License key** (when activating Pro): sent as `{ "license": "vs-..." }` via HTTPS POST to our license verification endpoint (`snapmark-license.463102527.workers.dev`). This is the sole network call performed by the extension.
+- **Purchase email**: recorded server-side by Paddle (our merchant-of-record) at the time of purchase; not accessed by GitLite.
+
+## 3. Data We Do NOT Collect
+
+- Source code content (your files never leave your machine)
+- File paths beyond what is needed to run local `git` commands
+- Email addresses (unless you explicitly provide them during purchase through Paddle)
+- Usage analytics, telemetry, or crash reports
+- IP addresses (the license Worker does not log them)
+
+## 4. Local Processing
+
+All git operations — `git log`, `git blame`, `git diff` — execute locally on your machine via Node.js `child_process`. No source code, file contents, or repository metadata are uploaded or transmitted anywhere.
+
+## 5. Third-Party Services
+
+| Service | Purpose | Data shared |
+|---|---|---|
+| **Paddle** (paddle.com) | Payment processing & Merchant of Record | Purchase email, transaction ID (handled by Paddle per their privacy policy) |
+| **Cloudflare Workers** | License issuance & verification | License key string only (short-lived, no persistence beyond KV store) |
+| **VS Code Marketplace** (marketplace.visualstudio.com) | Extension distribution | Standard marketplace metadata (extension name, version, publisher) |
+
+## 6. Data Retention
+
+- License keys stored in Cloudflare KV are retained for audit purposes. When a subscription expires, the key is marked `expired` in KV and no longer validates (verify returns `valid: false`), but the record is not deleted.
+- No other persistent storage exists outside your VS Code instance.
+
+## 7. Your Rights
+
+Under GDPR and CCPA, you have the right to request deletion of any data we hold. Contact us at **support@lxstudio.app** with your purchase email for any data access or deletion requests.
+
+## 8. Children's Privacy
+
+GitLite is not directed to children under 13. We do not knowingly collect data from children.
+
+## 9. Changes to This Policy
+
+We may update this policy periodically. Continued use after changes constitutes acceptance of the updated policy.
+
+## 10. Contact
+
+For privacy-related questions: **support@lxstudio.app**

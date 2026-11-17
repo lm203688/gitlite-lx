@@ -1,0 +1,76 @@
+/* GitLite Webview Styles — used by diff viewer panel */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--vscode-foreground, #24292f);
+  background: var(--vscode-editor-background, #ffffff);
+  padding: 16px;
+}
+
+.container { max-width: 1100px; margin: 0 auto; }
+
+.header {
+  border-bottom: 1px solid var(--vscode-panel-border, #eaeaea);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.header h1 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--vscode-titleBar-activeForeground, #24292f);
+}
+
+.path {
+  font-size: 12px;
+  color: var(--vscode-descriptionForeground, #6e7781);
+  margin-top: 4px;
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+}
+
+.diff-content {
+  overflow-x: auto;
+}
+
+.diff-line {
+  display: flex;
+  gap: 0;
+  font-family: 'SF Mono', Monaco, Consolas, monospace;
+  font-size: 12px;
+  white-space: pre;
+}
+
+.diff-line-num {
+  width: 40px;
+  text-align: right;
+  padding: 0 8px;
+  color: var(--vscode-terminal-ansiBlack, #6e7781);
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.diff-line-content {
+  flex: 1;
+  padding: 0 8px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.diff-line.added .diff-line-content { background: #dafbe1; color: #116329; }
+.diff-line.removed .diff-line-content { background: #ffebe9; color: #cf222e; }
+.diff-line.hunk { background: var(--vscode-badge-background, #dadbd3); color: var(--vscode-badge-foreground, #444); font-weight: 600; }
+.diff-line.meta { color: var(--vscode-descriptionForeground, #6e7781); font-style: italic; }
+
+.footer {
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid var(--vscode-panel-border, #eaeaea);
+  font-size: 11px;
+  color: var(--vscode-descriptionForeground, #6e7781);
+}
+
+/* Dead code removed: .free selector was never applied in buildDiffPanelHtml */
