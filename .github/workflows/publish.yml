@@ -19,3 +19,19 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npx @vscode/vsce publish --oidc
+
+  publish-snippetvault:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    defaults:
+      run:
+        working-directory: snippetvault
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx --yes @vscode/vsce@latest package --no-dependencies
+      - run: npx --yes @vscode/vsce@latest publish --oidc --no-dependencies

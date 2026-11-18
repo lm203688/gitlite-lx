@@ -1,0 +1,10 @@
+.vscode/**
+.vscode-test/**
+.git/**
+src/**
+node_modules/**
+**/*.ts
+gen_screenshots.py
+**/screenshot-before-after.png
+**/screenshot-editor.png
+**/.wrangler/**
