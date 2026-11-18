@@ -60,9 +60,14 @@ async function verifyLicense(endpoint, license) {
 // ---------------------------------------------------------------------------
 
 let _activeEditorPanel = null;
+// Module-level snippet store. VS Code's ExtensionContext does NOT reliably
+// persist arbitrary properties (context.snippets = ... is silently ignored),
+// so we keep the loaded snippets here at module scope where the tree provider
+// and command handlers can always read them.
+let currentSnippets = [];
 
 function openSnippetPanel(context, snippetId) {
-  const allSnippets = context.snippets;
+  const allSnippets = currentSnippets;
   const snippet = allSnippets.find(s => s.id === snippetId);
   if (!snippet) {
     vscode.window.showErrorMessage('SnippetVault: snippet not found.');
@@ -206,7 +211,7 @@ function registerCommands(context) {
       return;
     }
     // Use the currently selected snippet or prompt to pick one
-    const allSnippets = context.snippets || [];
+    const allSnippets = currentSnippets || [];
     if (!allSnippets.length) {
       vscode.window.showInformationMessage('SnippetVault: no snippets found.');
       return;
@@ -228,7 +233,7 @@ function registerCommands(context) {
 
   // Export as ZIP
   context.subscriptions.push(vscode.commands.registerCommand('snippetvault.exportZip', async () => {
-    const allSnippets = context.snippets || [];
+    const allSnippets = currentSnippets || [];
     if (!allSnippets.length) {
       vscode.window.showInformationMessage('SnippetVault: no snippets to export.');
       return;
@@ -293,7 +298,7 @@ function registerCommands(context) {
   context.subscriptions.push(vscode.commands.registerCommand('snippetvault.deleteSnippet', async (snippetId) => {
     const ok = await deleteSnippet(snippetId);
     if (ok) {
-      context.snippets = (context.snippets || []).filter(s => s.id !== snippetId);
+      currentSnippets = (currentSnippets || []).filter(s => s.id !== snippetId);
       if (context.treeProvider) {
         const query = context.searchQuery || '';
         context.treeProvider.updateSearch(query);
@@ -314,7 +319,7 @@ function registerWebViewHandler(context) {
     const msg = event.message;
     if (msg.command === 'save') {
       const snippetId = msg.snippetId;
-      const snippet = (context.snippets || []).find(s => s.id === snippetId);
+      const snippet = (currentSnippets || []).find(s => s.id === snippetId);
       if (!snippet) return;
       snippet.description = msg.description || '';
       snippet.body = msg.body || '';
@@ -364,24 +369,37 @@ function registerSearch(context) {
 
 async function activate(context) {
   // Load snippets asynchronously
-  context.snippets = [];
+  currentSnippets = [];
   context.searchQuery = '';
   context.pro = context.globalState.get(STATE_PRO, false);
   context.treeProvider = null;
 
-  try {
-    context.snippets = await loadAllSnippets();
-  } catch (_) {}
+  // Load snippets with retry-on-undefined guard.
+  // Root cause: the FIRST call to loadAllSnippets() in the activation moment
+  // resolves to undefined, while subsequent calls return the full array.
+  // This happens in the VS Code extension host startup timing. The guard below
+  // retries until a real array is produced so the tree renders correctly.
+  let loaded = [];
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      const r = await loadAllSnippets();
+      if (Array.isArray(r)) { loaded = r; break; }
+    } catch (e) {
+      console.log('[SV] loadAllSnippets attempt ' + attempt + ' error:', String(e && e.message || e));
+    }
+    await new Promise(res => setTimeout(res, 150));
+  }
+  currentSnippets = loaded;
 
   // Register tree view once
-  context.treeProvider = new SnippetTreeProvider(context.snippets);
+  const treeProvider = new SnippetTreeProvider(currentSnippets);
   const treeView = vscode.window.createTreeView('snippetvault-tree', {
-    treeDataProvider: context.treeProvider
+    treeDataProvider: treeProvider
   });
   context.subscriptions.push(treeView);
+  context.treeProvider = treeProvider;
 
   registerCommands(context);
-  registerWebViewHandler(context);
   registerSearch(context);
 
   // Welcome message
