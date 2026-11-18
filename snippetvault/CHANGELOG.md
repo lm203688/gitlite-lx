@@ -1,5 +1,13 @@
 # SnippetVault — Changelog
 
+## 1.0.1 (2026-11-19)
+
+- Fixed: the snippet tree view was empty after first launch. Snippets are now
+  loaded with a retry guard so the tree always shows all grouped snippets.
+- Fixed: snippets are kept in a module-scope store instead of `ExtensionContext`,
+  which VS Code does not reliably persist arbitrary properties on.
+- Removed: backup/debug artifacts from the packaged extension.
+
 ## 1.0.0 (2026-11-18)
 
 - Initial release.
