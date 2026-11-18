@@ -6,3 +6,8 @@
 **/.git/**
 **/sv_debug*.txt
 **/*.vsix
+
+# Store/marketing assets must never ship inside the VSIX
+materials/**
+checkout/**
+**/*.py
