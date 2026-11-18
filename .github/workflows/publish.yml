@@ -6,12 +6,18 @@ on:
     branches:
       - main
 
+# Publishing is manual (workflow_dispatch): re-pushing an already-published
+# version makes vsce fail, which would turn every push run red.
+# probe-b2 runs on every push to main: it needs clean external network, which
+# only a GitHub runner has, to reach the license Worker and the checkout page.
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,6 +31,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    if: github.event_name == 'workflow_dispatch'
     defaults:
       run:
         working-directory: snippetvault
@@ -35,3 +42,58 @@ jobs:
           node-version: 22
       - run: npx --yes @vscode/vsce@latest package --no-dependencies
       - run: npx --yes @vscode/vsce@latest publish --oidc --no-dependencies
+
+  probe-b2:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe license worker + checkout (external network)
+        id: probe
+        run: |
+          set -e
+          B=https://snapmark-license.463102527.workers.dev
+          C=https://snapmark-b2-checkout.pages.dev
+          R=/tmp/probe_report.md
+          {
+            echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo ""
+            echo "## 1. /health"
+            echo '```'
+            curl -sS -m 20 -w '\nHTTP %{http_code}\n' "$B/health" || echo "CURL_FAIL=$?"
+            echo '```'
+            echo ""
+            echo "## 2. /verify contract (extension POSTs {license})"
+            echo '```'
+            curl -sS -m 20 -w '\nHTTP %{http_code}\n' -X POST "$B/verify" \
+              -H 'Content-Type: application/json' \
+              -d '{"license":"snippet-probe-invalid-0000000000"}' || echo "CURL_FAIL"
+            echo '```'
+            echo ""
+            echo "## 3. /verify bad json (expect ok:false 400)"
+            echo '```'
+            curl -sS -m 20 -w '\nHTTP %{http_code}\n' -X POST "$B/verify" \
+              -H 'Content-Type: application/json' -d 'not-json' || echo "CURL_FAIL"
+            echo '```'
+            echo ""
+            echo "## 4. B2 checkout page"
+            echo '```'
+            curl -sS -m 20 -o /tmp/ck.html -w 'HTTP %{http_code} size=%{size_download}\n' "$C" || echo "CURL_FAIL"
+            printf 'price_7_present_count=%s\n' "$(grep -c '7.00' /tmp/ck.html || true)"
+            grep -o 'powered by Paddle' /tmp/ck.html | head -1 || true
+            echo '```'
+          } > "$R"
+          cat "$R"
+          mkdir -p .github/probe
+          cp "$R" .github/probe/report.md
+          git config user.email probe@actions
+          git config user.name actions-probe
+          git add .github/probe/report.md
+          if git diff --cached --quiet; then
+            echo "probe report unchanged, skipping commit"
+          else
+            git commit -m "probe: license worker + B2 checkout"
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" HEAD:refs/heads/probe-b2 --force
+          fi
