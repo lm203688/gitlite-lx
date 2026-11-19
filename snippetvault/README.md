@@ -6,7 +6,11 @@
 
 SnippetVault gives you a clean graphical interface inside VS Code to manage your snippets — no more hunting through thousands of lines of raw JSON. Everything stays on your machine. Zero uploads, zero tracking.
 
-![Screenshot](materials/screenshot-tree.png)
+**Browse, search & insert — real usage:**
+
+| Tree view | Search | Insert at cursor |
+|---|---|---|
+| ![Tree](materials/screenshot-tree.png) | ![Search](materials/screenshot-search.png) | ![Insert](materials/screenshot-insert.png) |
 
 ## Features
 
@@ -32,7 +36,7 @@ SnippetVault gives you a clean graphical interface inside VS Code to manage your
 
 Or install from the `.vsix` package:
 ```bash
-code --install-extension snippetvault-lx-1.0.0.vsix
+code --install-extension snippetvault-lx-1.0.1.vsix
 ```
 
 ## Usage
