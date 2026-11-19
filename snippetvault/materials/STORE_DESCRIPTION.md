@@ -12,7 +12,7 @@ snippet manager vscode, code snippets organizer, local snippet manager, vscode s
 Other
 
 **Banner Images:**
-- 1366×768 × 3 screenshots (screenshot-tree.png, screenshot-before-after.png, screenshot-editor.png)
+- 3 real screenshots (screenshot-tree.png, screenshot-search.png, screenshot-insert.png) — 1289×760 & 1934×1140
 
 **Icon:**
 - 128×128 icon.png
