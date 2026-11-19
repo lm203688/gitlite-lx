@@ -7,7 +7,8 @@
 **/sv_debug*.txt
 **/*.vsix
 
-# Store/marketing assets must never ship inside the VSIX
-materials/**
+# materials/ ships inside the VSIX: Marketplace renders README relative
+# image paths (materials/*.png) from inside the package. checkout/ and *.py
+# are not referenced by README, so they are excluded.
 checkout/**
 **/*.py
