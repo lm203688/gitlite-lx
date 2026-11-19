@@ -1,5 +1,10 @@
 # SnippetVault — Changelog
 
+## 1.0.2 (2026-11-19)
+
+- Docs: marketplace listing now shows three real screenshots (tree view,
+  search, insert-at-cursor) instead of placeholder images.
+
 ## 1.0.1 (2026-11-19)
 
 - Fixed: the snippet tree view was empty after first launch. Snippets are now
