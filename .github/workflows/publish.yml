@@ -17,7 +17,10 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    if: github.event_name == 'workflow_dispatch'
+    # Disabled: gitlite-lx itself is already published. Republishing it fails
+    # with "already exists" and only pollutes the run. Use publish-flowtasks /
+    # publish-depguard / publish-snippetvault instead.
+    if: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
