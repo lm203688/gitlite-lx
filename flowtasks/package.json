@@ -1,0 +1,112 @@
+{
+  "name": "flowtasks-lx",
+  "displayName": "FlowTasks — Natural Language Task Runner",
+  "description": "Describe workflows in plain language, group tasks, execute locally with one click. No cloud, no accounts.",
+  "version": "1.0.0",
+  "publisher": "LxStudio",
+  "icon": "icon.png",
+  "screenshots": [
+    { "path": "./assets/screenshots/screenshot-01-task-list.png",   "markDownName": "Task Group List.md" },
+    { "path": "./assets/screenshots/screenshot-02-group-view.png", "markDownName": "Group Detail View.md" },
+    { "path": "./assets/screenshots/screenshot-03-execution-result.png","markDownName": "Execution Result.md" }
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lm203688/flowtasks-lx.git"
+  },
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Other"],
+  "keywords": [
+    "task runner",
+    "workflow automation",
+    "multi step task",
+    "ai task generator",
+    "vscode tasks",
+    "dev productivity",
+    "mcp server"
+  ],
+  "activationEvents": [
+    "onCommand:flowtasks.listGroups",
+    "onCommand:flowtasks.createGroup",
+    "onCommand:flowtasks.executeGroup",
+    "onView:flowtasks-groups"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "flowtasks.listGroups",        "title": "FlowTasks: Refresh Group List",         "category": "FlowTasks" },
+      { "command": "flowtasks.createGroup",       "title": "FlowTasks: Create New Group",            "category": "FlowTasks" },
+      { "command": "flowtasks.executeGroup",      "title": "FlowTasks: Execute Selected Group",      "category": "FlowTasks" },
+      { "command": "flowtasks.deleteGroup",       "title": "FlowTasks: Delete Group",                "category": "FlowTasks" },
+      { "command": "flowtasks.renameGroup",       "title": "FlowTasks: Rename Group",                "category": "FlowTasks" },
+      { "command": "flowtasks.executeAll",        "title": "FlowTasks: Execute All Groups",          "category": "FlowTasks", "icon": "$(play)" },
+      { "command": "flowtasks.upgradeToPro",      "title": "FlowTasks: Upgrade to Pro ($9)",         "category": "FlowTasks" },
+      { "command": "flowtasks.activatePro",       "title": "FlowTasks: Activate Pro License",        "category": "FlowTasks" }
+    ],
+    "keybindings": [
+      { "command": "flowtasks.createGroup",     "key": "ctrl+alt+n", "when": "editorFocus" },
+      { "command": "flowtasks.executeGroup",    "key": "ctrl+alt+t", "when": "view == flowtasks-groups && viewItem =~ /group_/" }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "flowtasks", "title": "FlowTasks", "icon": "$(run-all)" }
+      ]
+    },
+    "views": {
+      "flowtasks": [
+        { "id": "flowtasks-groups", "name": "Task Groups" }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        { "command": "flowtasks.createGroup",     "when": "view == flowtasks-groups", "group": "navigation@1" },
+        { "command": "flowtasks.executeAll",      "when": "view == flowtasks-groups", "group": "navigation@2" },
+        { "command": "flowtasks.upgradeToPro",    "when": "view == flowtasks-groups", "group": "navigation@3" }
+      ],
+      "view/item/context": [
+        { "command": "flowtasks.executeGroup",   "when": "view == flowtasks-groups && viewItem == group_",  "group": "inline" },
+        { "command": "flowtasks.renameGroup",    "when": "view == flowtasks-groups && viewItem == group_",  "group": "inline" },
+        { "command": "flowtasks.deleteGroup",    "when": "view == flowtasks-groups && viewItem == group_",  "group": "inline" }
+      ]
+    },
+    "configuration": {
+      "title": "FlowTasks",
+      "properties": {
+        "flowtasks.verifyEndpoint": {
+          "type": "string",
+          "default": "https://snapmark-license.463102527.workers.dev/verify",
+          "description": "License verification endpoint."
+        },
+        "flowtasks.buyoutLink": {
+          "type": "string",
+          "default": "",
+          "description": "Paddle checkout link for FlowTasks Pro ($9 one-time). Leave empty to skip."
+        },
+        "flowtasks.maxFreeGroups": {
+          "type": "number",
+          "default": 5,
+          "description": "Maximum task groups allowed in the free tier."
+        },
+        "flowtasks.aiProvider": {
+          "type": "string",
+          "enum": ["openai", "claude", "gemini"],
+          "enumDescriptions": [
+            "OpenAI GPT models (requires OPENAI_API_KEY environment variable)",
+            "Anthropic Claude models (requires ANTHROPIC_API_KEY environment variable)",
+            "Google Gemini models (requires GOOGLE_API_KEY environment variable)"
+          ],
+          "default": "openai",
+          "markdownDescription": "AI provider for task description → task config generation ([Phase 2 - Upcoming]). Requires `flowtasks.aiApiKey` to be set."
+        },
+        "flowtasks.aiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your API key for the selected AI provider. Stored locally only — never transmitted to us. Used exclusively for direct provider calls (Phase 2)."
+        }
+      }
+    }
+  },
+  "scripts": {},
+  "dependencies": {}
+}

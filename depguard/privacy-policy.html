@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>DepGuard Privacy Policy</title>
+<style>body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;line-height:1.6}h1{color:#222}h2{margin-top:2rem;color:#333}</style>
+</head>
+<body>
+<h1>DepGuard Privacy Policy</h1>
+<p>Last updated: 2026-11-23</p>
+
+<div>
+<h2>1. What we collect</h2>
+<p>DepGuard <strong>does not collect any personal data or usage telemetry</strong>. All scan results and vulnerability data are stored locally on your machine inside VS Code's <code>globalState</code>.</p>
+<p>The only network call that leaves your machine occurs when you activate a Pro license key against our verification endpoint (<code>snapmark-license.463102527.workers.dev</code>). This transmits only the license key string (a short alphanumeric token). Our Cloudflare Worker backend validates it against KV storage and returns a boolean. No other data is sent.</p>
+<p>If you use the optional AI fix-explanation feature (Pro, Phase 2), your API key is stored locally and used exclusively for direct HTTPS calls to your chosen AI provider (OpenAI / Claude / Gemini). We never intercept, log, or store your API key or the content you send to it.</p>
+</div>
+
+<div>
+<h2>2. What data we store</h2>
+<p>All local data lives in VS Code's <code>globalState</code>:</p>
+<ul>
+<li><strong>Scan results</strong> — list of vulnerabilities with severity, affected versions, recommendations, and advisory URLs.</li>
+<li><strong>Pro flag + license key</strong> — stored locally; the key is also submitted to the verification endpoint during activation.</li>
+</ul>
+<p>We do not create any files outside VS Code's standard data directories (except the user-initiated HTML report export), and we never upload project code, dependency trees, or scan output anywhere.</p>
+</div>
+
+<div>
+<h2>3. Third-party services</h2>
+<ul>
+<li><strong>Paddle Billing</strong> — processes payment for the Pro upgrade. See the Paddle Privacy Policy.</li>
+<li><strong>Cloudflare Workers + KV</strong> — hosts the license verification API at <code>snapmark-license.463102527.workers.dev</code>. Cloudflare's standard logging applies to this endpoint. License keys are stored in Cloudflare KV (marked expired on cancellation, not deleted).</li>
+<li><strong>Your chosen AI provider</strong> (OpenAI / Anthropic / Google) — only contacted directly by your browser/VS Code when you explicitly configure an API key. We do not proxy or observe these requests.</li>
+</ul>
+<p>There is no third-party analytics, advertising, or tracking within DepGuard.</p>
+</div>
+
+<div>
+<h2>4. Data retention</h2>
+<p>Since no user data leaves your machine, there is nothing for us to retain. The license verification log may contain the timestamp of your last request; this is not linked to your identity and is used solely for operational monitoring.</p>
+</div>
+
+<div>
+<h2>5. Your rights</h2>
+<p>You may revoke your Pro license at any time through the Paddle customer portal. Upon cancellation, your local scan results and settings remain on your machine; only the Pro flag is cleared from our KV store.</p>
+</div>
+
+<div>
+<h2>6. Contact</h2>
+<p>For privacy-related questions, email <strong>privacy@lxstudio.dev</strong>.</p>
+</div>
+
+<div>
+<h2>7. Changes</h2>
+<p>We may update this policy. Continued use after changes constitutes acceptance of the new terms.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+{
+  "name": "depguard-lx",
+  "displayName": "DepGuard — Local Dependency Security Scanner",
+  "description": "Scan npm/pip dependencies for vulnerabilities locally. Zero uploads. Color-coded severity panel. AI fix explanations (Pro).",
+  "version": "1.0.0",
+  "publisher": "LxStudio",
+  "icon": "icon.png",
+  "screenshots": [
+    { "path": "./assets/screenshots/screenshot-01-scan-results.png",        "markDownName": "Scan Results Panel.md" },
+    { "path": "./assets/screenshots/screenshot-02-cve-detail.png",         "markDownName": "CVE Detail View.md" },
+    { "path": "./assets/screenshots/screenshot-03-export-report.png",      "markDownName": "Export Report.md" }
+  ],
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lm203688/depguard-lx.git"
+  },
+  "engines": { "vscode": "^1.80.0" },
+  "categories": ["Other"],
+  "keywords": [
+    "dependency scan",
+    "npm audit",
+    "security scanner",
+    "cve checker",
+    "vulnerability",
+    "pip audit",
+    "dev security",
+    "mcp server"
+  ],
+  "activationEvents": [
+    "onCommand:depguard.scanProject",
+    "onCommand:depguard.exportHtml",
+    "onView:depguard-results"
+  ],
+  "main": "./extension.js",
+  "contributes": {
+    "commands": [
+      { "command": "depguard.scanProject",      "title": "DepGuard: Scan Project Dependencies",  "category": "DepGuard" },
+      { "command": "depguard.clearResults",     "title": "DepGuard: Clear Scan Results",          "category": "DepGuard" },
+      { "command": "depguard.exportHtml",       "title": "DepGuard: Export HTML Report",          "category": "DepGuard" },
+      { "command": "depguard.upgradeToPro",     "title": "DepGuard: Upgrade to Pro ($9)",         "category": "DepGuard" },
+      { "command": "depguard.activatePro",      "title": "DepGuard: Activate Pro License",        "category": "DepGuard" }
+    ],
+    "keybindings": [
+      { "command": "depguard.scanProject", "key": "ctrl+alt+s", "when": "editorFocus" }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        { "id": "depguard", "title": "DepGuard", "icon": "$(shield)" }
+      ]
+    },
+    "views": {
+      "depguard": [
+        { "id": "depguard-results", "name": "Scan Results" }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        { "command": "depguard.scanProject",  "when": "view == depguard-results", "group": "navigation@1" },
+        { "command": "depguard.exportHtml",   "when": "view == depguard-results", "group": "navigation@2" },
+        { "command": "depguard.upgradeToPro", "when": "view == depguard-results", "group": "navigation@3" }
+      ],
+      "view/item/context": [
+        { "command": "depguard.showCveDetail", "when": "view == depguard-results && viewItem =~ /^cve_/" }
+      ]
+    },
+    "configuration": {
+      "title": "DepGuard",
+      "properties": {
+        "depguard.verifyEndpoint": {
+          "type": "string",
+          "default": "https://snapmark-license.463102527.workers.dev/verify",
+          "description": "License verification endpoint."
+        },
+        "depguard.buyoutLink": {
+          "type": "string",
+          "default": "",
+          "description": "Paddle checkout link for DepGuard Pro ($9 one-time)."
+        },
+        "depguard.aiProvider": {
+          "type": "string",
+          "enum": ["openai", "claude", "gemini"],
+          "enumDescriptions": [
+            "OpenAI GPT models (requires your own API key)",
+            "Anthropic Claude models (requires your own API key)",
+            "Google Gemini models (requires your own API key)"
+          ],
+          "default": "openai",
+          "markdownDescription": "AI provider for fix-explanation feature ([Phase 2 - Upcoming]). Requires `depguard.aiApiKey`."
+        },
+        "depguard.aiApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your API key for the selected AI provider. Stored locally only — never transmitted to us. Used exclusively for direct provider calls (Phase 2)."
+        }
+      }
+    }
+  },
+  "scripts": {},
+  "dependencies": {}
+}

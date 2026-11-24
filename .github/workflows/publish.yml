@@ -43,6 +43,40 @@ jobs:
       - run: npx --yes @vscode/vsce@latest package --no-dependencies
       - run: npx --yes @vscode/vsce@latest publish --oidc --no-dependencies
 
+  publish-flowtasks:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    if: github.event_name == 'workflow_dispatch'
+    defaults:
+      run:
+        working-directory: flowtasks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx --yes @vscode/vsce@latest package --no-dependencies
+      - run: npx --yes @vscode/vsce@latest publish --oidc --no-dependencies
+
+  publish-depguard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    if: github.event_name == 'workflow_dispatch'
+    defaults:
+      run:
+        working-directory: depguard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npx --yes @vscode/vsce@latest package --no-dependencies
+      - run: npx --yes @vscode/vsce@latest publish --oidc --no-dependencies
+
   probe-b2:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
