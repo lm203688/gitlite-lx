@@ -34,7 +34,7 @@ Lightweight GitLens alternative. Inline blame, file history timeline, and simple
 
 ## Activation
 
-Purchase Pro via the Paddle checkout link (set `gitlite.buyoutLink` in settings after creating your product in Paddle). After purchase:
+Purchase Pro via our secure Paddle checkout — the payment link opens automatically. After purchase:
 
 1. Right-click → **GitLite: Upgrade to Pro** (opens checkout in browser)
 2. Or paste your license key via **GitLite: Activate Pro** command (found in Command Palette `Ctrl+Shift+P`)
@@ -47,8 +47,8 @@ Your code never leaves your machine. The only network call is the license `/veri
 
 | Setting | Default | Description |
 |---|---|---|
-| `gitlite.verifyEndpoint` | `https://snapmark-license.61960005.workers.dev/verify` | License service URL |
-| `gitlite.buyoutLink` | *(empty)* | Paddle checkout URL for Pro ($9 buyout). Leave empty to use default. |
+| `gitlite.verifyEndpoint` | `https://snapmark-license.463102527.workers.dev/verify` | License service URL |
+| `gitlite.buyoutLink` | *(defaults to reusable payment link)* | Paddle checkout URL for Pro ($9 buyout). |
 
 ---
 

@@ -40,7 +40,7 @@ Open VS Code Settings (`Ctrl+,`) and search for "gitlite":
 
 | Setting | Default | Description |
 |---|---|---|
-| `gitlite.verifyEndpoint` | `https://snapmark-license.61960005.workers.dev/verify` | License verification endpoint (Cloudflare Worker) |
+| `gitlite.verifyEndpoint` | `https://snapmark-license.463102527.workers.dev/verify` | License verification endpoint (Cloudflare Worker) |
 | `gitlite.buyoutLink` | *(empty)* | Paddle checkout URL for Pro ($9). Set after creating your product in Paddle. |
 
 ## Privacy

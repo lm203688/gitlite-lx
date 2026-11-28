@@ -17,17 +17,16 @@ jobs:
     permissions:
       contents: read
       id-token: write
-    # Disabled: gitlite-lx itself is already published. Republishing it fails
-    # with "already exists" and only pollutes the run. Use publish-flowtasks /
-    # publish-depguard / publish-snippetvault instead.
-    if: false
+    # Enabled for this push: gitlite-lx goes 1.0.0 -> 1.0.1 (new version, so
+    # vsce publish will succeed). After a successful publish, restore `if: false`
+    # to keep monorepo pushes green.
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
       - run: npm ci
-      - run: npx @vscode/vsce publish --oidc
+      - run: npx --yes @vscode/vsce@latest publish --oidc --no-dependencies
 
   publish-snippetvault:
     runs-on: ubuntu-latest

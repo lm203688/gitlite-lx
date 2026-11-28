@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1 — 2026-11-28
+
+- Pro checkout now opens by default: `gitlite.buyoutLink` defaults to the reusable Paddle payment link ($9 one-time). No manual setup needed.
+
 ## 1.0.0 — 2026-11-17
 
 Initial release.
